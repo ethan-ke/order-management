@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Merchant;
 use App\Http\Controllers\MainController;
 use App\Http\Requests\Merchant\OrderRequest;
 use App\Http\Resources\Merchant\OrderResource;
+use App\Models\Order;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class OrdersController extends MainController
@@ -21,18 +23,19 @@ class OrdersController extends MainController
     {
         $dateS = Carbon::now()->startOfMonth();
         $dateE = Carbon::now()->endOfMonth();
+        $queryBuilder = QueryBuilder::for($this->user()->order())->where('status', 1);
+        $orders = $queryBuilder->whereBetween('created_at', [$dateS, $dateE])
+            ->orderByDesc('id')->get();
+        $today_income = $queryBuilder->whereDate('created_at', Carbon::now()->toDateString())->sum('price') * $this->user()->commission_ratio;
 
-        $query = QueryBuilder::for($this->user()->order())
-            ->whereBetween('created_at',[$dateS, $dateE])
-            ->orderByDesc('id');
+        $total_amount = $orders->sum('price');
+        $monthly_income = $orders->sum('price') * $this->user()->commission_ratio;
 
-        $items = $query->get();
-//        $items = $query->paginate($this->perPage);
-        $orders = $query->get();
         $result = [
-            'orders' => OrderResource::collection($items),
-//            'orders' => OrderResource::collection($items)->response()->getData(),
-            'income' => $orders->sum('price') * $this->user()->commission_ratio
+            'orders'         => OrderResource::collection(QueryBuilder::for($this->user()->order())->whereBetween('created_at', [$dateS, $dateE])->orderByDesc('id')->get()),
+            'today_income'   => sprintf("%.2f", $today_income),
+            'monthly_income' => sprintf("%.2f", $monthly_income),
+            'total_amount'   => sprintf("%.2f", $total_amount),
         ];
         return json_response($result);
     }
@@ -54,4 +57,38 @@ class OrdersController extends MainController
         return json_response(status_code: 201);
     }
 
+    /**
+     * @param Order $order
+     * @return JsonResponse
+     */
+    public function show(Order $order): JsonResponse
+    {
+        return json_response($order);
+    }
+
+    /**
+     * @param OrderRequest $request
+     * @param Order $order
+     * @return JsonResponse
+     */
+    public function update(OrderRequest $request, Order $order): JsonResponse
+    {
+        $data = $request->validated();
+        $order->update($data);
+        return json_response();
+    }
+
+    /**
+     * @param Request $request
+     * @param Order $order
+     * @return JsonResponse
+     */
+    public function cancel(Request $request, Order $order): JsonResponse
+    {
+        $data = $request->validate([
+            'status' => 'integer|nullable'
+        ]);
+        $order->update($data);
+        return json_response();
+    }
 }

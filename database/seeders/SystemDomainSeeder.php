@@ -21,7 +21,7 @@ class SystemDomainSeeder extends Seeder
             ],
             [
                 'type'   => 'admin-api',
-                'domain' => 'api.admin.order.riyadh-massagevip.com',
+                'domain' => 'api.order.admin.riyadh-massagevip.com',
             ],
         ]);
     }

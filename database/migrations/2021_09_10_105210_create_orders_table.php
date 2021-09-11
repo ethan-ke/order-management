@@ -19,6 +19,7 @@ class CreateOrdersTable extends Migration
             $table->string('phone');
             $table->string('room_number');
             $table->decimal('price');
+            $table->tinyInteger('status')->default(1)->comment('1: Normal, 2: Cancel');
             $table->timestamps();
         });
     }

@@ -19,6 +19,7 @@ class OrderResource extends JsonResource
             'phone'       => $this->resource->phone,
             'price'       => $this->resource->price,
             'room_number' => $this->resource->room_number,
+            'status'      => $this->resource->status,
             'created_at'  => $this->resource->created_at->toDateTimeString(),
         ];
     }
