@@ -2,37 +2,28 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\MainController;
-use App\Http\Requests\Admin\AuthorizationRequest;
-use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\JsonResponse;
-use Auth;
+use Illuminate\Http\Response;
+use Laravel\Passport\Http\Controllers\AccessTokenController;
+use Psr\Http\Message\ServerRequestInterface;
 
-class AuthorizationsController extends MainController
+class AuthorizationsController extends AccessTokenController
 {
     /**
-     * @param AuthorizationRequest $request
-     * @return JsonResponse
-     * @throws AuthenticationException
+     * @param ServerRequestInterface $request
+     * @return Response
      */
-    public function store(AuthorizationRequest $request): JsonResponse
+    public function store(ServerRequestInterface $request): Response
     {
-        $credentials = $request->validated();
-        if (!$token = Auth::attempt($credentials)) {
-            throw new AuthenticationException(trans('auth.failed'));
-        }
-        return $this->respondWithToken($token)->setStatusCode(201);
+        return $this->issueToken($request)->setStatusCode(201);
     }
 
-    public function update()
+    /**
+     * @return JsonResponse
+     */
+    public function destroy(): JsonResponse
     {
-        $token = Auth::refresh();
-        return $this->respondWithToken($token);
-    }
-
-    public function destroy()
-    {
-        Auth::logout();
-        return response(null, 204);
+        auth('admin-api')->user()->token()->revoke();
+        return json_response(status_code: 204);
     }
 }
