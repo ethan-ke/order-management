@@ -25,7 +25,7 @@ class MerchantRequest extends FormRequest
     {
         return [
             'username'        => 'string|max:20|nullable',
-            'commission_rate' => 'digits:value|nullable',
+            'commission_rate' => 'numeric|nullable',
             'password'        => 'string|nullable',
         ];
     }

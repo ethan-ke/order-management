@@ -17,7 +17,7 @@ class CreateMerchantsTable extends Migration
             $table->id();
             $table->string('username', 20)->comment('用户名');
             $table->string('password');
-            $table->string('commission_ratio');
+            $table->string('commission_rate');
             $table->timestamps();
         });
     }

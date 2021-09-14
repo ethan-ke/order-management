@@ -6,7 +6,6 @@ use App\Http\Controllers\MainController;
 use App\Http\Requests\Admin\MerchantRequest;
 use App\Models\Merchant;
 use Illuminate\Http\JsonResponse;
-use Spatie\QueryBuilder\QueryBuilder;
 
 class MerchantsController extends MainController
 {
@@ -17,10 +16,7 @@ class MerchantsController extends MainController
      */
     public function index(): JsonResponse
     {
-        $coupon = QueryBuilder::for(Merchant::class)
-            ->orderByDesc('id')
-            ->allowedFilters(['merchant_name'])
-            ->paginate($this->perPage);
+        $coupon = Merchant::orderByDesc('id')->paginate($this->perPage);
         return json_response($coupon);
     }
 
@@ -44,8 +40,8 @@ class MerchantsController extends MainController
      */
     public function update(MerchantRequest $request, Merchant $merchant): JsonResponse
     {
-        $data = $request->validated();
+        $data = $request->only('commission_rate');
         $merchant->update($data);
-        return json_response(null, '103');
+        return json_response();
     }
 }

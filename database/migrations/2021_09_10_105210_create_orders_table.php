@@ -18,6 +18,8 @@ class CreateOrdersTable extends Migration
             $table->bigInteger('merchant_id');
             $table->string('phone');
             $table->string('room_number');
+            $table->decimal('commission');
+            $table->decimal('commission_rate', 2);
             $table->decimal('price');
             $table->tinyInteger('status')->default(1)->comment('1: Normal, 2: Cancel');
             $table->timestamps();

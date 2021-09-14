@@ -9,7 +9,6 @@ Route::post('authorizations', [AuthorizationsController::class, 'store'])
 Route::middleware('auth:merchant-api')->group(function() {
     // 当前登录用户信息
     Route::get('user', [UsersController::class, 'mine']);
-    Route::patch('orders/cancel/{order}', [OrdersController::class, 'cancel']);
+    Route::patch('orders/status/{order}', [OrdersController::class, 'cancel']);
     Route::resource('orders', OrdersController::class);
-//    Route::patch('orders/{order}/shipment', [OrdersController::class, 'ship'])->name('orders.shipment');
 });

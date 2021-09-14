@@ -23,13 +23,13 @@ class OrdersController extends MainController
     {
         $dateS = Carbon::now()->startOfMonth();
         $dateE = Carbon::now()->endOfMonth();
-        $queryBuilder = QueryBuilder::for($this->user()->order())->where('status', 1);
+        $queryBuilder = QueryBuilder::for($this->user()->order())->where('status', 3);
         $orders = $queryBuilder->whereBetween('created_at', [$dateS, $dateE])
             ->orderByDesc('id')->get();
-        $today_income = $queryBuilder->whereDate('created_at', Carbon::now()->toDateString())->sum('price') * $this->user()->commission_ratio;
+        $today_income = $queryBuilder->whereDate('created_at', Carbon::now()->toDateString())->sum('commission');
 
         $total_amount = $orders->sum('price');
-        $monthly_income = $orders->sum('price') * $this->user()->commission_ratio;
+        $monthly_income = $orders->sum('commission');
 
         $result = [
             'orders'         => OrderResource::collection(QueryBuilder::for($this->user()->order())->whereBetween('created_at', [$dateS, $dateE])->orderByDesc('id')->get()),
@@ -48,6 +48,8 @@ class OrdersController extends MainController
         $data = $request->validated();
         DB::beginTransaction();
         try {
+            $data['commission'] = $data['price'] * $this->user()->commission_rate;
+            $data['commission_rate'] = $this->user()->commission_rate;
             $this->user()->order()->create($data);
             DB::commit();
         } catch (\Throwable $e) {

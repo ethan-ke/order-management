@@ -15,13 +15,14 @@ class OrderResource extends JsonResource
     public function toArray($request): array
     {
         return [
-            'id'          => $this->resource->id,
-            'phone'       => $this->resource->phone,
-            'price'       => $this->resource->price,
-            'room_number' => $this->resource->room_number,
-            'status'      => $this->resource->status,
-            'created_at'  => $this->resource->created_at->toDateTimeString(),
-            'updated_at'  => $this->resource->updated_at->toDateTimeString(),
+            'id'            => $this->resource->id,
+            'merchant_name' => $this->resource->merchant->username,
+            'phone'         => $this->resource->phone,
+            'price'         => $this->resource->price,
+            'room_number'   => $this->resource->room_number,
+            'status'        => $this->resource->status,
+            'created_at'    => $this->resource->created_at->toDateTimeString(),
+            'updated_at'    => $this->resource->updated_at->toDateTimeString(),
         ];
     }
 }
