@@ -76,6 +76,8 @@ class OrdersController extends MainController
     public function update(OrderRequest $request, Order $order): JsonResponse
     {
         $data = $request->validated();
+        $data['commission'] = $data['price'] * $this->user()->commission_rate;
+        $data['commission_rate'] = $this->user()->commission_rate;
         $order->update($data);
         return json_response();
     }
