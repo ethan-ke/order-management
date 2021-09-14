@@ -21,11 +21,11 @@ class OrdersController extends MainController
      */
     public function index(): JsonResponse
     {
+        $queryBuilder = QueryBuilder::for($this->user()->order())->where('status', 3);
+
         $dateS = Carbon::now()->startOfMonth();
         $dateE = Carbon::now()->endOfMonth();
-        $queryBuilder = QueryBuilder::for($this->user()->order())->where('status', 3);
-        $orders = $queryBuilder->whereBetween('created_at', [$dateS, $dateE])
-            ->orderByDesc('id')->get();
+        $orders = $queryBuilder->whereBetween('created_at', [$dateS, $dateE])->orderByDesc('id')->get();
         $today_income = $queryBuilder->whereDate('created_at', Carbon::now()->toDateString())->sum('commission');
 
         $total_amount = $orders->sum('price');

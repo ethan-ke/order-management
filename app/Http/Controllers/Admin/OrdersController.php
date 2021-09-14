@@ -23,22 +23,4 @@ class OrdersController extends MainController
         $orders = QueryBuilder::for(Order::class)->orderByDesc('id')->paginate($this->perPage);
         return json_response(OrderResource::collection($orders)->response()->getData());
     }
-
-    /**
-     * @throws \Throwable
-     */
-    public function store(OrderRequest $request): JsonResponse
-    {
-        $data = $request->validated();
-        DB::beginTransaction();
-        try {
-            $this->user()->order()->create($data);
-            DB::commit();
-        } catch (\Throwable $e) {
-            \Log::error($e);
-            DB::rollBack();
-        }
-        return json_response(status_code: 201);
-    }
-
 }

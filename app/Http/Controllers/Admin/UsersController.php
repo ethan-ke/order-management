@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\MainController;
+use App\Models\Merchant;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 
 /**
@@ -18,5 +20,30 @@ class UsersController extends MainController
     {
         $user = $this->user();
         return json_response($user);
+    }
+
+    /**
+     * @return JsonResponse
+     */
+    public function statistics(): JsonResponse
+    {
+        $merchants = Merchant::orderByDesc('id')->get();
+        $item = [];
+        foreach ($merchants as $key => $merchant) {
+            $queryBuilder = $merchant->order()->where('status', 3);
+            $dateS = Carbon::now()->startOfMonth();
+            $dateE = Carbon::now()->endOfMonth();
+            $orders = $queryBuilder->whereBetween('created_at', [$dateS, $dateE])->orderByDesc('id')->get();
+            $today_income = $queryBuilder->whereDate('created_at', Carbon::now()->toDateString())->sum('commission');
+            $monthly_income = $orders->sum('commission');
+            $total_amount = $orders->sum('price');
+            $item[$key] = [
+                'name'  => $merchant->username,
+                'today_income'   => sprintf("%.2f", $today_income),
+                'monthly_income' => sprintf("%.2f", $monthly_income),
+                'total_amount'   => sprintf("%.2f", $total_amount),
+            ];
+        }
+        return json_response($item);
     }
 }
