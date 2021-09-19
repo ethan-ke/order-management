@@ -20,7 +20,10 @@ class OrdersController extends MainController
      */
     public function index(): JsonResponse
     {
-        $orders = QueryBuilder::for(Order::class)->orderByDesc('id')->paginate($this->perPage);
+        $orders = QueryBuilder::for(Order::class)
+            ->allowedFilters(['merchant_id', 'room_number'])
+            ->orderByDesc('id')
+            ->paginate($this->perPage);
         return json_response(OrderResource::collection($orders)->response()->getData());
     }
 }
