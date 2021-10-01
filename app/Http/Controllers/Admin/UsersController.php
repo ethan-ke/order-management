@@ -32,7 +32,6 @@ class UsersController extends MainController
         foreach ($merchants as $key => $merchant) {
             $queryBuilder = $merchant->order()->where('status', 3);
             $lastMonthS = Carbon::now()->startOfMonth()->subMonth();
-            $lastMonthE = $lastMonthS->endOfMonth();
             $dateS = Carbon::now()->startOfMonth();
             $dateE = Carbon::now()->endOfMonth();
             $orders = $queryBuilder->whereBetween('created_at', [$dateS, $dateE])->orderByDesc('id')->get();
@@ -40,7 +39,7 @@ class UsersController extends MainController
             $monthly_income = $orders->sum('commission');
             $total_amount = $orders->sum('price');
 
-            $lastOrders = $queryBuilder->whereBetween('created_at', [$lastMonthS, $lastMonthE])->orderByDesc('id')->get();
+            $lastOrders = $merchant->order()->where('status', 3)->whereBetween('created_at', [$lastMonthS, Carbon::now()->startOfMonth()->subMonth()->endOfMonth()])->orderByDesc('id')->get();
             $last_month_income = $lastOrders->sum('commission');
             $last_month_total_amount = $lastOrders->sum('price');
 
