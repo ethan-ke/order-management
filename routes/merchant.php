@@ -11,4 +11,5 @@ Route::middleware('auth:merchant-api')->group(function() {
     Route::get('user', [UsersController::class, 'mine']);
     Route::patch('orders/status/{order}', [OrdersController::class, 'cancel']);
     Route::resource('orders', OrdersController::class);
+    Route::get('statistics', [OrdersController::class, 'statistics']);
 });
