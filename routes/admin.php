@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AuthorizationsController;
+use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\MerchantsController;
 use App\Http\Controllers\Admin\OrdersController;
 use App\Http\Controllers\Admin\UsersController;
@@ -13,4 +14,5 @@ Route::middleware('auth:admin-api')->group(function() {
     Route::get('statistics', [UsersController::class, 'statistics']);
     Route::resource('orders', OrdersController::class);
     Route::resource('merchants', MerchantsController::class);
+    Route::resource('customers', CustomerController::class);
 });
