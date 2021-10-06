@@ -15,4 +15,5 @@ Route::middleware('auth:admin-api')->group(function() {
     Route::resource('orders', OrdersController::class);
     Route::resource('merchants', MerchantsController::class);
     Route::resource('customers', CustomerController::class);
+    Route::patch('customers/items/bulk-update', [CustomerController::class, 'bulkUpdate']);
 });

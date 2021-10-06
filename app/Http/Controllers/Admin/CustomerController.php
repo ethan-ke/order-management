@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\MainController;
-use App\Http\Resources\Merchant\OrderResource;
 use App\Models\Customer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class CustomerController extends MainController
@@ -29,23 +27,32 @@ class CustomerController extends MainController
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
-        //
+        $data = $request->validate([
+            'name'   => 'nullable|string',
+            'status' => 'required|in:0,1',
+            'phone'  => 'required|string'
+        ]);
+        Customer::create($data);
+        return json_response();
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return JsonResponse
      */
-    public function show($id)
+    public function bulkUpdate(Request $request): JsonResponse
     {
-        //
+        $data = $request->validate([
+            'items'  => 'required|array',
+            'status' => 'required|in:0,1'
+        ]);
+        Customer::whereIn('id', $data['items'])->update(['status' => $data['status']]);
+        return json_response();
     }
 
     /**
@@ -58,21 +65,11 @@ class CustomerController extends MainController
     public function update(Request $request, Customer $customer): JsonResponse
     {
         $data = $request->validate([
-            'name' => 'required|string',
-            'phone' => 'required|string'
+            'name'   => 'nullable|string',
+            'phone'  => 'required|string',
+            'status' => 'required|in:0,1'
         ]);
         $customer->update($data);
         return json_response();
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }
