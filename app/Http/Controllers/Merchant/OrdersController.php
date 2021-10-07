@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Merchant;
 use App\Http\Controllers\MainController;
 use App\Http\Requests\Merchant\OrderRequest;
 use App\Http\Resources\Merchant\OrderResource;
+use App\Models\Customer;
 use App\Models\Order;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Log;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class OrdersController extends MainController
@@ -74,14 +76,21 @@ class OrdersController extends MainController
     public function store(OrderRequest $request): JsonResponse
     {
         $data = $request->validated();
+        $customer = Customer::where('phone', $data['phone'])->first();
         DB::beginTransaction();
         try {
+            if (!$customer instanceof Customer) {
+                Customer::create([
+                    'name'  => $data['room_number'] . '-' . $data['price'],
+                    'phone' => $data['phone'],
+                ]);
+            }
             $data['commission'] = $data['price'] * $this->user()->commission_rate;
             $data['commission_rate'] = $this->user()->commission_rate;
             $this->user()->order()->create($data);
             DB::commit();
         } catch (\Throwable $e) {
-            \Log::error($e);
+            Log::error($e);
             DB::rollBack();
         }
         return json_response(status_code: 201);
