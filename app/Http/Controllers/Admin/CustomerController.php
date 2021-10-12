@@ -35,7 +35,7 @@ class CustomerController extends MainController
         $data = $request->validate([
             'name'   => 'nullable|string',
             'status' => 'required|in:0,1',
-            'phone'  => 'required|string'
+            'phone'  => 'unique:customers,phone'
         ]);
         Customer::create($data);
         return json_response();
