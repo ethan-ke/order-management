@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Merchant\AuthorizationsController;
+use App\Http\Controllers\Merchant\CustomerController;
 use App\Http\Controllers\Merchant\OrdersController;
 use App\Http\Controllers\Merchant\UsersController;
 
@@ -11,4 +12,7 @@ Route::middleware('auth:merchant-api')->group(function() {
     Route::get('user', [UsersController::class, 'mine']);
     Route::patch('orders/status/{order}', [OrdersController::class, 'cancel']);
     Route::resource('orders', OrdersController::class);
+    Route::get('statistics', [OrdersController::class, 'statistics']);
+    Route::get('customers/search', [CustomerController::class, 'search']);
+    Route::resource('customers', CustomerController::class);
 });
