@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\MainController;
+use App\Http\Resources\Admin\CustomerResource;
 use App\Models\Customer;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -21,7 +22,8 @@ class CustomerController extends MainController
             ->allowedFilters(['name', 'phone'])
             ->orderByDesc('id')
             ->paginate($this->perPage);
-        return json_response($item);
+        return json_response(CustomerResource::collection($item)->response()->getData());
+
     }
 
     /**

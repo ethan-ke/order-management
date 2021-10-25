@@ -17,7 +17,7 @@ class OrderResource extends JsonResource
         return [
             'id'              => $this->resource->id,
             'merchant_name'   => $this->resource->merchant->username,
-            'phone'           => $this->resource->phone,
+            'phone'           => substr_replace($this->resource->phone, '****', 4, 6),
             'price'           => $this->resource->price,
             'room_number'     => $this->resource->room_number,
             'commission'      => $this->resource->commission,
