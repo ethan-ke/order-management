@@ -35,6 +35,14 @@ class Merchant extends Authenticatable
     }
 
     /**
+     * @return HasMany
+     */
+    public function queryLog(): HasMany
+    {
+        return $this->hasMany(QueryLog::class);
+    }
+
+    /**
      * Prepare a date for array / JSON serialization.
      *
      * @param  \DateTimeInterface  $date
