@@ -14,10 +14,15 @@ class OrderResource extends JsonResource
      */
     public function toArray($request): array
     {
+        if (auth()->user()->username === 'ethan') {
+            $phone = $this->resource->phone;
+        } else {
+            $phone = substr_replace($this->resource->phone, '****', 4, 6);
+        }
         return [
             'id'              => $this->resource->id,
             'merchant_name'   => $this->resource->merchant->username,
-            'phone'           => substr_replace($this->resource->phone, '****', 4, 6),
+            'phone'           => $phone,
             'price'           => $this->resource->price,
             'room_number'     => $this->resource->room_number,
             'commission'      => $this->resource->commission,

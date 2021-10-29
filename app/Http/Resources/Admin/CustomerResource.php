@@ -14,10 +14,15 @@ class CustomerResource extends JsonResource
      */
     public function toArray($request): array
     {
+        if (auth()->user()->username === 'ethan') {
+            $phone = $this->resource->phone;
+        } else {
+            $phone = substr_replace($this->resource->phone, '****', 4, 6);
+        }
         return [
             'id'         => $this->resource->id,
             'name'       => $this->resource->name,
-            'phone'      => substr_replace($this->resource->phone, '****', 4, 6),
+            'phone'      => $phone,
             'status'     => $this->resource->status,
             'created_at' => $this->resource->created_at->toDateTimeString(),
             'updated_at' => $this->resource->updated_at->toDateTimeString(),
