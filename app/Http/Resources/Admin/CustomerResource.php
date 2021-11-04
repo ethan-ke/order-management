@@ -17,7 +17,11 @@ class CustomerResource extends JsonResource
         if (auth()->user()->username === 'ethan') {
             $phone = $this->resource->phone;
         } else {
-            $phone = substr_replace($this->resource->phone, '****', 4, 6);
+            if ($this->additional && $this->additional['type'] === 1) {
+                $phone = $this->resource->phone;
+            } else {
+                $phone = substr_replace($this->resource->phone, '****', 4, 6);
+            }
         }
         return [
             'id'         => $this->resource->id,

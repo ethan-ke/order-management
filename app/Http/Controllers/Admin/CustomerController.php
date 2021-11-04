@@ -45,6 +45,17 @@ class CustomerController extends MainController
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param Customer $customer
+     * @return JsonResponse
+     */
+    public function show(Customer $customer): JsonResponse
+    {
+        return json_response(CustomerResource::make($customer)->additional(['type' => 1]));
+    }
+
+    /**
      * @param Request $request
      * @return JsonResponse
      */
