@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
 
@@ -40,5 +41,13 @@ class Admin extends Authenticatable
     public function findForPassport(string $username): Admin
     {
         return $this->where('username', $username)->first();
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function customer(): HasMany
+    {
+        return $this->hasMany(Customer::class);
     }
 }

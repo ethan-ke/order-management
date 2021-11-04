@@ -22,6 +22,7 @@ class CustomerResource extends JsonResource
         return [
             'id'         => $this->resource->id,
             'name'       => $this->resource->name,
+            'admin_name' => $this->resource->admin?->username,
             'phone'      => $phone,
             'status'     => $this->resource->status,
             'created_at' => $this->resource->created_at->toDateTimeString(),

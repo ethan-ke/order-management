@@ -19,6 +19,7 @@ class CustomerController extends MainController
     public function index(): JsonResponse
     {
         $item = QueryBuilder::for(Customer::class)
+            ->with('admin')
             ->allowedFilters(['name', 'phone'])
             ->orderByDesc('id')
             ->paginate($this->perPage);
@@ -39,7 +40,7 @@ class CustomerController extends MainController
             'status' => 'required|in:0,1',
             'phone'  => 'unique:customers,phone'
         ]);
-        Customer::create($data);
+        $this->user()->customer()->create($data);
         return json_response();
     }
 
