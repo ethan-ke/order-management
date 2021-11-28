@@ -27,6 +27,7 @@ class OrderResource extends JsonResource
             'room_number'     => $this->resource->room_number,
             'commission'      => $this->resource->commission,
             'commission_rate' => $this->resource->commission_rate,
+            'deduction'       => $this->resource->deduction,
             'status'          => $this->resource->status,
             'created_at'      => $this->resource->created_at->toDateTimeString(),
             'updated_at'      => $this->resource->updated_at->toDateTimeString(),

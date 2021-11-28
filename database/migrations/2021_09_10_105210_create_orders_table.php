@@ -21,6 +21,7 @@ class CreateOrdersTable extends Migration
             $table->decimal('commission');
             $table->decimal('commission_rate', 2);
             $table->decimal('price');
+            $table->decimal('deduction')->nullable();
             $table->tinyInteger('status')->default(1)->comment('1: Normal, 2: Cancel');
             $table->timestamps();
         });

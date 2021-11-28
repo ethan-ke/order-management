@@ -26,6 +26,7 @@ class OrderRequest extends FormRequest
         return [
             'phone'       => 'required|string',
             'price'       => 'required|numeric',
+            'deduction'   => 'required|numeric',
             'status'      => 'required|integer',
             'room_number' => 'required|string',
         ];
