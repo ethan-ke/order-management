@@ -13,6 +13,7 @@ Route::middleware('auth:merchant-api')->group(function() {
     Route::patch('orders/status/{order}', [OrdersController::class, 'cancel']);
     Route::resource('orders', OrdersController::class);
     Route::get('statistics', [OrdersController::class, 'statistics']);
-    Route::get('customers/search', [CustomerController::class, 'search']);
+    Route::get('search/phone', [CustomerController::class, 'search']);
+    Route::post('search/photo', [CustomerController::class, 'photo']);
     Route::resource('customers', CustomerController::class);
 });
