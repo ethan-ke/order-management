@@ -29,7 +29,7 @@ class MainController extends Controller
     {
         $this->guard = $request->get('guard') ?? '';
         Auth()->shouldUse($this->guard);
-        $this->perPage = $request->limit ?? 15;
+        $this->perPage = $request->limit ?? 50;
     }
 
     /**
