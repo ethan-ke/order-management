@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\MainController;
 use App\Models\Merchant;
+use Arr;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 
@@ -58,6 +59,7 @@ class UsersController extends MainController
                 'actual_salary_last_month'    => sprintf("%.2f", $last_month_income - $total_deductions_last_month),
             ];
         }
-        return json_response($item);
+        $itemArr = collect($item)->sortByDesc( 'last_month_total_amount')->all();
+        return json_response(array_values($itemArr));
     }
 }
