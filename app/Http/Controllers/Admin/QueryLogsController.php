@@ -18,7 +18,7 @@ class QueryLogsController extends MainController
     public function index(): JsonResponse
     {
         $orders = QueryBuilder::for(QueryLog::class)
-            ->with('merchant')
+            ->with(['merchant', 'customer'])
             ->allowedFilters([AllowedFilter::exact('merchant_id')])
             ->orderByDesc('id')
             ->paginate($this->perPage);

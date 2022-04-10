@@ -13,4 +13,12 @@ class QueryLog extends BaseModel
     {
         return $this->belongsTo(Merchant::class);
     }
+
+    /**
+     * @return BelongsTo
+     */
+    public function customer(): BelongsTo
+    {
+        return $this->belongsTo(Customer::class, 'phone', 'phone');
+    }
 }
