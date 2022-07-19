@@ -15,5 +15,6 @@ Route::middleware('auth:merchant-api')->group(function() {
     Route::get('statistics', [OrdersController::class, 'statistics']);
     Route::get('search/phone', [CustomerController::class, 'search']);
     Route::post('search/photo', [CustomerController::class, 'photo']);
+    Route::patch('password', [UsersController::class, 'password']);
     Route::resource('customers', CustomerController::class);
 });
