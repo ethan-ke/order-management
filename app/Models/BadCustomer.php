@@ -2,10 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-
-class BadCustomer extends Model
+class BadCustomer extends BaseModel
 {
-    use HasFactory;
 }

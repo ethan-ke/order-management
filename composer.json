@@ -13,6 +13,7 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "overtrue/laravel-query-logger": "^2.1",
+        "qcloud/cos-sdk-v5": "^2.5",
         "spatie/laravel-query-builder": "^3.6",
         "tencentcloud/tencentcloud-sdk-php": "^3.0"
     },

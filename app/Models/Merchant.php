@@ -43,6 +43,14 @@ class Merchant extends Authenticatable
     }
 
     /**
+     * @return HasMany
+     */
+    public function badCustomer(): HasMany
+    {
+        return $this->hasMany(BadCustomer::class);
+    }
+
+    /**
      * Prepare a date for array / JSON serialization.
      *
      * @param  \DateTimeInterface  $date
