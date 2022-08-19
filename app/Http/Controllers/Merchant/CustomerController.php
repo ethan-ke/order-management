@@ -134,7 +134,7 @@ class CustomerController extends MainController
                 $resp = $client->GetPersonList($req);
 
                 $req = new CreatePersonRequest();
-                $personNum = $resp->PersonNum + 1;
+                $personNum = (int) $resp->PersonInfos[0]->PersonId + 1;
                 $params = array(
                     "GroupId"    => 'db_1',
                     "PersonName" => 'customer_name_' . $personNum,
