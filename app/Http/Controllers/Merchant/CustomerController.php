@@ -158,4 +158,22 @@ class CustomerController extends MainController
             return json_response([], $e->getMessage(), 403);
         }
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function number(Request $request): JsonResponse
+    {
+        $data = $request->validate([
+            'name'   => 'required|string',
+            'phone'  => 'required|string|unique:customers,phone',
+            'status' => 'required|integer',
+        ]);
+        $customer = Customer::where('phone', $data['phone'])->first();
+        if (!$customer instanceof Customer) {
+            Customer::create($data);
+        }
+        return json_response(status_code: 201);
+    }
 }
