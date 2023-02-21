@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\MainController;
+use App\Http\Requests\Admin\MerchantCreateRequest;
 use App\Http\Requests\Admin\MerchantRequest;
 use App\Models\Merchant;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Hash;
 
 class MerchantsController extends MainController
 {
@@ -18,6 +20,18 @@ class MerchantsController extends MainController
     {
         $coupon = Merchant::orderByDesc('id')->paginate($this->perPage);
         return json_response($coupon);
+    }
+
+    /**
+     * @param MerchantCreateRequest $request
+     * @return JsonResponse
+     */
+    public function store(MerchantCreateRequest $request): JsonResponse
+    {
+        $data = $request->validated();
+        $data['password'] = Hash::make($data['password']);
+        Merchant::create($data);
+        return json_response(status_code: 201);
     }
 
     /**

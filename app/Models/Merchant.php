@@ -12,7 +12,7 @@ class Merchant extends Authenticatable
 {
     use HasApiTokens, HasFactory;
 
-    protected $fillable = ['commission_rate', 'password'];
+    protected $fillable = ['username', 'commission_rate', 'password'];
     protected $hidden = ['password'];
 
     /**
