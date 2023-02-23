@@ -8,6 +8,7 @@ use App\Http\Requests\Admin\MerchantRequest;
 use App\Models\Merchant;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class MerchantsController extends MainController
 {
@@ -18,7 +19,10 @@ class MerchantsController extends MainController
      */
     public function index(): JsonResponse
     {
-        $coupon = Merchant::orderByDesc('id')->paginate($this->perPage);
+        $coupon = QueryBuilder::for(Merchant::class)
+            ->orderByDesc('id')
+            ->allowedFilters(['username'])
+            ->paginate($this->perPage);
         return json_response($coupon);
     }
 
