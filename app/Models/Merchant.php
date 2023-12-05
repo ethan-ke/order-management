@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use DateTimeInterface;
+use Hash;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -14,6 +15,17 @@ class Merchant extends Authenticatable
 
     protected $fillable = ['username', 'commission_rate', 'password'];
     protected $hidden = ['password'];
+
+    /**
+     * Validate the password of the user for the Passport password grant.
+     *
+     * @param string $password
+     * @return bool
+     */
+    public function validatePassword(string $password): bool
+    {
+        return Hash::check($password, $this->password);
+    }
 
     /**
      * 通过给定的username获取用户实例

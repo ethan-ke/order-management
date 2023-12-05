@@ -29,7 +29,7 @@ class CustomerController extends MainController
      */
     public function search(Request $request): JsonResponse
     {
-        $data = $request->validate(['phone' => 'required|string|min:8']);
+        $data = $request->validate(['phone' => 'required|string|min:12']);
         $customer = Customer::where('phone', 'like', '%' . $data['phone'] . '%')->first();
 
         $this->user()->queryLog()->create($data);
