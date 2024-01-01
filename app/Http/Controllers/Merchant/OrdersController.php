@@ -38,6 +38,8 @@ class OrdersController extends MainController
             'today_income'   => sprintf("%.2f", $today_income),
             'monthly_income' => sprintf("%.2f", $monthly_income),
             'total_amount'   => sprintf("%.2f", $total_amount),
+            'startOfMonth'   => $dateS,
+            'endOfMonth'     => $dateE,
         ];
         return json_response($result);
     }
