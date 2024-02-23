@@ -14,7 +14,7 @@ class CustomerResource extends JsonResource
      */
     public function toArray($request): array
     {
-        if (auth()->user()->username === 'ethan') {
+        if (auth()->user()->username === 'ethan' || auth()->user()->username === 'tian6688666') {
             $phone = $this->resource->phone;
         } else {
             if ($this->additional && $this->additional['type'] === 1) {
