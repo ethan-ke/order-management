@@ -58,7 +58,7 @@ class MerchantsController extends MainController
      */
     public function update(MerchantRequest $request, Merchant $merchant): JsonResponse
     {
-        $data = $request->only('commission_rate');
+        $data = $request->validated();
         $merchant->update($data);
         return json_response();
     }
