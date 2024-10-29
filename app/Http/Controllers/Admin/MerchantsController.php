@@ -59,6 +59,9 @@ class MerchantsController extends MainController
     public function update(MerchantRequest $request, Merchant $merchant): JsonResponse
     {
         $data = $request->validated();
+        if ($request->has('password')) {
+            $data['password'] = Hash::make($request->post('password'));
+        }
         $merchant->update($data);
         return json_response();
     }
