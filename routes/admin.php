@@ -7,8 +7,8 @@ use App\Http\Controllers\Admin\OrdersController;
 use App\Http\Controllers\Admin\QueryLogsController;
 use App\Http\Controllers\Admin\UsersController;
 
-Route::post('authorizations', [AuthorizationsController::class, 'store'])
-    ->name('authorizations.store');
+Route::post('authorizations', [AuthorizationsController::class, 'store']);
+Route::delete('authorizations/current', [AuthorizationsController::class, 'destroy']);
 Route::middleware('auth:admin-api')->group(function() {
     // 当前登录用户信息
     Route::get('user', [UsersController::class, 'mine']);

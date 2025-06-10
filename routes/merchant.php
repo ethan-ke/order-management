@@ -5,8 +5,8 @@ use App\Http\Controllers\Merchant\CustomerController;
 use App\Http\Controllers\Merchant\OrdersController;
 use App\Http\Controllers\Merchant\UsersController;
 
-Route::post('authorizations', [AuthorizationsController::class, 'store'])
-    ->name('authorizations.store');
+Route::post('authorizations', [AuthorizationsController::class, 'store']);
+Route::delete('authorizations/current', [AuthorizationsController::class, 'destroy']);
 Route::middleware('auth:merchant-api')->group(function() {
     // 当前登录用户信息
     Route::get('user', [UsersController::class, 'mine']);
